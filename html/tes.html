@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Search </title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --dark: #1b263b;
+            --light: #f8f9fa;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #f72585;
+            --gray: #adb5bd;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5;
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .search-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .array-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .array-element {
+            width: 80px;
+            height: 80px;
+            background-color: var(--accent);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .array-element::before {
+            content: attr(data-index);
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .current {
+            background-color: var(--warning);
+            transform: translateY(-10px);
+            box-shadow: 0 8px 15px rgba(248, 150, 30, 0.3);
+        }
+        
+        .checked {
+            background-color: var(--gray);
+            opacity: 0.7;
+        }
+        
+        .found {
+            background-color: var(--danger);
+            animation: celebrate 0.8s ease;
+            box-shadow: 0 8px 15px rgba(247, 37, 133, 0.4);
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .status-container {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            width: 100%;
+            text-align: center;
+            border-left: 5px solid var(--primary);
+        }
+        
+        .status {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress {
+            height: 5px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        @keyframes celebrate {
+            0% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.2) rotate(5deg); }
+            50% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.2) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+        
+        footer {
+            margin-top: auto;
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .array-element {
+                width: 80px;
+                height: 80px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Linear Search </h1>
+            <p class="subtitle">Visualizing how linear search algorithm works</p>
+        </header>
+        
+        <div class="search-container">
+            <div class="status-container">
+                <div class="status" id="status">Ready to search for number 60</div>
+                <div class="progress">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+            </div>
+            
+            <div class="array-container" id="arrayContainer">
+                <!-- Array elements will be added here by JavaScript -->
+            </div>
+            
+            <div class="controls">
+                <button class="btn-primary" id="startBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                    </svg>
+                    Start Search
+                </button>
+                <button class="btn-outline" id="resetBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                        <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                    </svg>
+                    Reset
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    
+    <script>
+        const array = [20, 35, 42, 10, 60, 15, 70, 30];
+        const target = 60;
+        let currentIndex = 0;
+        let searchInterval;
+        let isSearching = false;
+        
+        const arrayContainer = document.getElementById('arrayContainer');
+        const startBtn = document.getElementById('startBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const statusElement = document.getElementById('status');
+        const progressBar = document.getElementById('progressBar');
+        
+        // Initialize the array display
+        function initializeArray() {
+            arrayContainer.innerHTML = '';
+            
+            array.forEach((value, index) => {
+                const element = document.createElement('div');
+                element.className = 'array-element';
+                element.textContent = value;
+                element.dataset.index = index;
+                element.id = `element-${index}`;
+                arrayContainer.appendChild(element);
+            });
+            
+            updateProgress(0);
+        }
+        
+        // Update progress bar
+        function updateProgress(percent) {
+            progressBar.style.width = `${percent}%`;
+        }
+        
+        // Start the linear search
+        function startSearch() {
+            if (isSearching) return;
+            
+            isSearching = true;
+            startBtn.disabled = true;
+            currentIndex = 0;
+            
+            statusElement.textContent = `Searching for ${target}...`;
+            
+            searchInterval = setInterval(() => {
+                // Reset previous element's current class
+                if (currentIndex > 0) {
+                    const prevElement = document.getElementById(`element-${currentIndex - 1}`);
+                    prevElement.classList.remove('current');
+                    prevElement.classList.add('checked');
+                }
+                
+                // Check if we've reached the end of the array
+                if (currentIndex >= array.length) {
+                    clearInterval(searchInterval);
+                    statusElement.textContent = `${target} not found in the array.`;
+                    startBtn.disabled = false;
+                    isSearching = false;
+                    updateProgress(100);
+                    return;
+                }
+                
+                // Update progress
+                updateProgress((currentIndex / array.length) * 100);
+                
+                // Highlight current element
+                const currentElement = document.getElementById(`element-${currentIndex}`);
+                currentElement.classList.add('current');
+                
+                // Check if current element is the target
+                if (array[currentIndex] === target) {
+                    clearInterval(searchInterval);
+                    currentElement.classList.remove('current');
+                    currentElement.classList.add('found');
+                    statusElement.textContent = `🎉 Found ${target} at index ${currentIndex}!`;
+                    startBtn.disabled = false;
+                    isSearching = false;
+                    updateProgress(100);
+                } else {
+                    statusElement.textContent = `Checking index ${currentIndex} (value: ${array[currentIndex]})...`;
+                    currentIndex++;
+                }
+            }, 800); // Fixed animation speed of 800ms
+        }
+        
+        // Reset the search
+        function resetSearch() {
+            clearInterval(searchInterval);
+            isSearching = false;
+            currentIndex = 0;
+            startBtn.disabled = false;
+            statusElement.textContent = 'Ready to search for number 60';
+            updateProgress(0);
+            
+            // Remove all highlighting
+            const elements = document.querySelectorAll('.array-element');
+            elements.forEach(element => {
+                element.classList.remove('current', 'found', 'checked');
+            });
+        }
+        
+        // Event listeners
+        startBtn.addEventListener('click', startSearch);
+        resetBtn.addEventListener('click', resetSearch);
+        
+        // Initialize the page
+        initializeArray();
+    </script>
+</body>
+</html>
