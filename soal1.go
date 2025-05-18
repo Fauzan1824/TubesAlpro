@@ -563,8 +563,8 @@ func menu() {
 		fmt.Println("6. Urutkan Berdasarkan Poin")
 		fmt.Println("7. Urutkan Berdasarkan Tanggal")
 		fmt.Println("8. Urutkan Berdasarkan Frekuensi")
-		fmt.Println("9. Cari Aktivitas Berdasarkan Kategori (Sequential Search)")
-		fmt.Println("10. Cari Aktivitas (Binary Search)")
+		fmt.Println("9. Cari Aktivitas Berdasarkan Kategori") //Sequential Search
+		fmt.Println("10. Cari Aktivitas") //Binary Search
 		fmt.Println("11. Laporan Bulanan Jejak Karbon")
 		fmt.Println("99. Keluar")
 		fmt.Print("Pilih menu: ")
