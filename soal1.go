@@ -343,6 +343,8 @@ func cariKategori() {
 // Binary Search untuk mencari aktivitas 
 func cariAktivitas() {
 	
+
+}
 // Menu utama aplikasi
 func menu() {
 	var pilih int = 0
