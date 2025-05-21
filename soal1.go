@@ -318,26 +318,7 @@ func urutFrekuensi(naik bool) {
 
 // Sequential Search untuk mencari habit berdasarkan kategori
 func cariKategori() {
-	var kategori string
-	fmt.Print("Masukkan kategori yang ingin dicari: ")
-	fmt.Scan(&kategori)
-
-	var found bool = false
-	fmt.Printf("\n--- Hasil Pencarian untuk Kategori '%s' ---\n", kategori)
-
-	var i int
-	for i = 0; i < jumlah; i++ {
-		if strings.ToLower(daftarHabit[i].Kategori) == strings.ToLower(kategori) {
-			fmt.Printf("[%d] %s | %s | %d poin | %s\n",
-				daftarHabit[i].ID, daftarHabit[i].Nama, daftarHabit[i].Kategori,
-				daftarHabit[i].Poin, daftarHabit[i].Tanggal)
-			found = true
-		}
-	}
-
-	if !found {
-		fmt.Println("Tidak ditemukan habit dengan kategori tersebut.")
-	}
+	
 }
 
 // Binary Search untuk mencari aktivitas 
