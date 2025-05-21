@@ -340,60 +340,9 @@ func cariKategori() {
 	}
 }
 
-// Binary Search untuk mencari aktivitas master
+// Binary Search untuk mencari aktivitas 
 func cariAktivitas() {
-	// Untuk binary search, array harus diurutkan terlebih dahulu
-	var tempMaster [JML_AKTIVITAS]MasterAktivitas
-	var i int
-	for i = 0; i < JML_AKTIVITAS; i++ {
-		tempMaster[i] = master[i]
-	}
-
-	// Bubble sort untuk mengurutkan master berdasarkan nama
-	var j int
-	for i = 0; i < JML_AKTIVITAS-1; i++ {
-		for j = 0; j < JML_AKTIVITAS-i-1; j++ {
-			if tempMaster[j].Nama > tempMaster[j+1].Nama {
-				var temp MasterAktivitas
-				temp = tempMaster[j]
-				tempMaster[j] = tempMaster[j+1]
-				tempMaster[j+1] = temp
-			}
-		}
-	}
-
-	var cari string
-	fmt.Print("Masukkan nama aktivitas yang ingin dicari: ")
-	fmt.Scan(&cari)
-	cari = strings.ToLower(cari)
-
-	// Binary Search
-	var left int = 0
-	var right int = JML_AKTIVITAS - 1
-	var found bool = false
-	var mid int
-
-	for left <= right {
-		mid = (left + right) / 2
-
-		if strings.ToLower(tempMaster[mid].Nama) == cari {
-			fmt.Printf("\nAktivitas ditemukan: %s | %s | %d poin\n",
-				tempMaster[mid].Nama, tempMaster[mid].Kategori,
-				tempMaster[mid].Poin)
-			found = true
-			break
-		} else if strings.ToLower(tempMaster[mid].Nama) < cari {
-			left = mid + 1
-		} else {
-			right = mid - 1
-		}
-	}
-
-	if !found {
-		fmt.Println("Aktivitas tidak ditemukan.")
-	}
-}
-
+	
 // Menu utama aplikasi
 func menu() {
 	var pilih int = 0
