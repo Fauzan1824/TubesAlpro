@@ -318,58 +318,78 @@ func urutFrekuensi(naik bool) {
 
 // Sequential Search untuk mencari habit berdasarkan kategori
 func cariKategori() {
-	if jumlah == 0 {
-		fmt.Println("Belum ada data habit.")
-		return
-	}
+	if len(master) == 0 {
+	fmt.Println("Belum ada data master aktivitas.")
+	return
+}
 
-	var kategori string
-	fmt.Print("Masukkan kategori yang dicari: ")
-	fmt.Scan(&kategori)
+	var keyword string
+	fmt.Print("Masukkan nama kategori yang ingin dicari: ")
+	fmt.Scan(&keyword)
 
-	var ditemukan bool = false
-	fmt.Println("\n--- Hasil Pencarian Berdasarkan Kategori ---")
-	for i := 0; i < jumlah; i++ {
-		if strings.EqualFold(daftarHabit[i].Kategori, kategori) {
-			fmt.Printf("[%d] %s | %s | %d poin | %s\n",
-				daftarHabit[i].ID, daftarHabit[i].Nama, daftarHabit[i].Kategori,
-				daftarHabit[i].Poin, daftarHabit[i].Tanggal)
-			ditemukan = true
-		}
-	}
-	if !ditemukan {
-		fmt.Println("Tidak ada habit dengan kategori tersebut.")
+	keyword = strings.ToLower(keyword)
+	ditemukan := false
+
+	fmt.Println("\n--- Aktivitas dengan kategori:", keyword, "---")
+	for i := 0; i < JML_AKTIVITAS; i++ {
+		if strings.ToLower(master[i].Kategori) == keyword {
+	fmt.Printf("- %s | %s | %d poin\n", master[i].Nama, master[i].Kategori, master[i].Poin)
+	ditemukan = true
 	}
 }
 
-
+	if !ditemukan {
+	fmt.Println("Tidak ditemukan aktivitas dengan kategori tersebut.")
+}
+}
 
 
 // Binary Search untuk mencari aktivitas 
 func cariAktivitas() {
-	// Daripada binary search, gunakan linear search untuk kata kunci
-	var keyword string
-	var namaAktivitas string
+	if jumlah == 0 {
+		fmt.Println("belum ada data habit.")
+		return
+	}
+	var carinama string
+	fmt.Scanln(&carinama)
+	fmt.Println("masukan nama aktivitas yang dicari")
 	
-	fmt.Print("Masukkan nama aktivitas yang ingin dicari: ")
-	fmt.Scan(&keyword)  // Hanya mengambil kata pertama
-	keyword = strings.ToLower(keyword)
 	
-	fmt.Printf("\n--- Hasil Pencarian untuk '%s' ---\n", keyword)
+	low := 0
+	high := jumlah - 1
+	ditemukan := false
 	
-	// Pencarian linear - mencari kata kunci dalam setiap nama aktivitas
-	var found bool = false
-	var i int
-	for i = 0; i < JML_AKTIVITAS; i++ {
-		namaAktivitas = strings.ToLower(master[i].Nama)
-		if strings.Contains(namaAktivitas, keyword) {
-			fmt.Printf("Aktivitas ditemukan: %s | %s | %d poin\n",
-				master[i].Nama, master[i].Kategori, master[i].Poin)
-			found = true
+	for low <= high {
+		mid := (low + high) / 2
+		compare := strings.Compare(strings.ToLower(daftarHabit[mid].Nama), strings.ToLower(carinama))
+		if compare == 0 {
+			fmt.Println("\n--- Hasil Pencarian Aktivitas ---")
+			for i := 0; i < jumlah; i++ {
+				if strings.EqualFold(daftarHabit[i].Nama, carinama) {
+					fmt.Printf("[%d] %s | %s | %d poin | %s\n",
+						daftarHabit[i].ID, daftarHabit[i].Nama, daftarHabit[i].Kategori,
+						daftarHabit[i].Poin, daftarHabit[i].Tanggal)
+					ditemukan = true
+				}
+			}
+			fmt.Println("\n--- Hasil Pencarian Aktivitas ---")
+			for i := 0; i < jumlah; i++ {
+				if strings.EqualFold(daftarHabit[i].Nama, carinama) {
+					fmt.Printf("[%d] %s | %s | %d poin | %s\n",
+						daftarHabit[i].ID, daftarHabit[i].Nama, daftarHabit[i].Kategori,
+						daftarHabit[i].Poin, daftarHabit[i].Tanggal)
+					ditemukan = true
+				}
+			}
+
+break
+		} else if compare < 0 {
+			low = mid + 1
+		} else {
+			high = mid - 1
 		}
 	}
-	
-	if !found {
+	if !ditemukan {
 		fmt.Println("Aktivitas tidak ditemukan.")
 	}
 }
