@@ -283,116 +283,64 @@ func urutTanggal(naik bool) {
 	fmt.Println("Data berhasil diurutkan berdasarkan tanggal.")
 }
 
-// Mengurutkan aktivitas berdasarkan frekuensi menggunakan Selection Sort
-func urutFrekuensi(naik bool) {
-	// Selection Sort untuk frekuensi aktivitas
-	var temp [JML_AKTIVITAS]AktivitasFrekuensi
-	var i int
-	for i = 0; i < JML_AKTIVITAS; i++ {
-		temp[i] = frekuensiAktivitas[i]
-	}
-
-	var j int
-	var idx int
-	for i = 0; i < JML_AKTIVITAS-1; i++ {
-		idx = i
-		for j = i + 1; j < JML_AKTIVITAS; j++ {
-			if (naik && temp[j].Frekuensi < temp[idx].Frekuensi) ||
-				(!naik && temp[j].Frekuensi > temp[idx].Frekuensi) {
-				idx = j
-			}
-		}
-		var tempAkt AktivitasFrekuensi
-		tempAkt = temp[i]
-		temp[i] = temp[idx]
-		temp[idx] = tempAkt
-	}
-
-	fmt.Println("\n--- Aktivitas Berdasarkan Frekuensi ---")
-	for i = 0; i < JML_AKTIVITAS; i++ {
-		if temp[i].Frekuensi > 0 {
-			fmt.Printf("%s: %d kali\n", temp[i].Nama, temp[i].Frekuensi)
-		}
-	}
-}
-
 // Sequential Search untuk mencari habit berdasarkan kategori
 func cariKategori() {
 	if len(master) == 0 {
-	fmt.Println("Belum ada data master aktivitas.")
-	return
-}
+		fmt.Println("Belum ada data master aktivitas.")
+		return
+	}
 
 	var keyword string
 	fmt.Print("Masukkan nama kategori yang ingin dicari: ")
 	fmt.Scan(&keyword)
 
 	keyword = strings.ToLower(keyword)
-	ditemukan := false
+	var ditemukan bool = false
 
 	fmt.Println("\n--- Aktivitas dengan kategori:", keyword, "---")
-	for i := 0; i < JML_AKTIVITAS; i++ {
+	var i int
+	for i = 0; i < JML_AKTIVITAS; i++ {
 		if strings.ToLower(master[i].Kategori) == keyword {
-	fmt.Printf("- %s | %s | %d poin\n", master[i].Nama, master[i].Kategori, master[i].Poin)
-	ditemukan = true
-	}
-}
-
-	if !ditemukan {
-	fmt.Println("Tidak ditemukan aktivitas dengan kategori tersebut.")
-}
-}
-
-
-// Binary Search untuk mencari aktivitas 
-func cariAktivitas() {
-	if jumlah == 0 {
-		fmt.Println("belum ada data habit.")
-		return
-	}
-	var carinama string
-	fmt.Scanln(&carinama)
-	fmt.Println("masukan nama aktivitas yang dicari")
-	
-	
-	low := 0
-	high := jumlah - 1
-	ditemukan := false
-	
-	for low <= high {
-		mid := (low + high) / 2
-		compare := strings.Compare(strings.ToLower(daftarHabit[mid].Nama), strings.ToLower(carinama))
-		if compare == 0 {
-			fmt.Println("\n--- Hasil Pencarian Aktivitas ---")
-			for i := 0; i < jumlah; i++ {
-				if strings.EqualFold(daftarHabit[i].Nama, carinama) {
-					fmt.Printf("[%d] %s | %s | %d poin | %s\n",
-						daftarHabit[i].ID, daftarHabit[i].Nama, daftarHabit[i].Kategori,
-						daftarHabit[i].Poin, daftarHabit[i].Tanggal)
-					ditemukan = true
-				}
-			}
-			fmt.Println("\n--- Hasil Pencarian Aktivitas ---")
-			for i := 0; i < jumlah; i++ {
-				if strings.EqualFold(daftarHabit[i].Nama, carinama) {
-					fmt.Printf("[%d] %s | %s | %d poin | %s\n",
-						daftarHabit[i].ID, daftarHabit[i].Nama, daftarHabit[i].Kategori,
-						daftarHabit[i].Poin, daftarHabit[i].Tanggal)
-					ditemukan = true
-				}
-			}
-
-break
-		} else if compare < 0 {
-			low = mid + 1
-		} else {
-			high = mid - 1
+			fmt.Printf("- %s | %s | %d poin\n", master[i].Nama, master[i].Kategori, master[i].Poin)
+			ditemukan = true
 		}
 	}
+
 	if !ditemukan {
-		fmt.Println("Aktivitas tidak ditemukan.")
+		fmt.Println("Tidak ditemukan aktivitas dengan kategori tersebut.")
 	}
 }
+
+// Sequential Search untuk mencari aktivitas 
+func cariAktivitas() {
+	if jumlah == 0 {
+		fmt.Println("Belum ada data habit.")
+		return
+	}
+
+	var carinama string
+	fmt.Print("Masukan Aktiviytas yang di cari : ")
+	fmt.Scanln(&carinama)
+	
+	var ditemukan bool = false
+	
+	fmt.Println("\n--- Hasil Pencarian Aktivitas ---")
+	var i int
+	for i = 0; i < jumlah; i++ {
+		// Gunakan strings.Contains untuk pencarian substring (kata kunci)
+		if strings.Contains(strings.ToLower(daftarHabit[i].Nama), strings.ToLower(carinama)) {
+			fmt.Printf("[%d] %s | %s | %d poin | %s\n",
+				daftarHabit[i].ID, daftarHabit[i].Nama, daftarHabit[i].Kategori,
+				daftarHabit[i].Poin, daftarHabit[i].Tanggal)
+			ditemukan = true
+		}
+	}
+	
+	if !ditemukan {
+		fmt.Println("Aktivitas dengan kata kunci tersebut tidak ditemukan.")
+	}
+}
+
 // Menu utama aplikasi
 func menu() {
 	var pilih int = 0
@@ -405,9 +353,8 @@ func menu() {
 		fmt.Println("5. Lihat Total Poin")
 		fmt.Println("6. Urutkan Berdasarkan Poin")
 		fmt.Println("7. Urutkan Berdasarkan Tanggal")
-		fmt.Println("8. Urutkan Berdasarkan Frekuensi")
-		fmt.Println("9. Cari Aktivitas Berdasarkan Kategori") // Sequential Search
-		fmt.Println("10. Cari Aktivitas")                     // Binary Search
+		fmt.Println("8. Cari Aktivitas Berdasarkan Kategori") // Sequential Search
+		fmt.Println("9. Cari Aktivitas")                     // Sequential Search
 		fmt.Println("99. Keluar")
 		fmt.Print("Pilih menu: ")
 		fmt.Scan(&pilih)
@@ -434,13 +381,8 @@ func menu() {
 			fmt.Scan(&opsi)
 			urutTanggal(opsi == 1)
 		case 8:
-			var opsi int
-			fmt.Print("Naik (1) atau Turun (0): ")
-			fmt.Scan(&opsi)
-			urutFrekuensi(opsi == 1)
-		case 9:
 			cariKategori()
-		case 10:
+		case 9:
 			cariAktivitas()
 		case 99:
 			fmt.Println("Terima kasih telah membangun kebiasaan hijau bersama Green Habit!")
@@ -451,9 +393,7 @@ func menu() {
 }
 
 func main() {
-
 	// Menampilkan tanggal hari ini
 	fmt.Println("Mari mulai menambahkan aktivitas ramah lingkungan Anda!")
-
 	menu()
 }
