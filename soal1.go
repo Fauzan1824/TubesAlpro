@@ -286,30 +286,30 @@ func urutTanggal(naik bool) {
 // Sequential Search untuk mencari habit berdasarkan kategori
 func cariKategori() {
 	if len(master) == 0 {
-	fmt.Println("Belum ada data master aktivitas.")
-	return
-}
+		fmt.Println("Belum ada data master aktivitas.")
+		return
+	}
 
 	var keyword string
 	fmt.Print("Masukkan nama kategori yang ingin dicari: ")
 	fmt.Scan(&keyword)
 
 	keyword = strings.ToLower(keyword)
-	ditemukan := false
+	var ditemukan bool = false
 
 	fmt.Println("\n--- Aktivitas dengan kategori:", keyword, "---")
-	for i := 0; i < JML_AKTIVITAS; i++ {
+	var i int
+	for i = 0; i < JML_AKTIVITAS; i++ {
 		if strings.ToLower(master[i].Kategori) == keyword {
-	fmt.Printf("- %s | %s | %d poin\n", master[i].Nama, master[i].Kategori, master[i].Poin)
-	ditemukan = true
+			fmt.Printf("- %s | %s | %d poin\n", master[i].Nama, master[i].Kategori, master[i].Poin)
+			ditemukan = true
+		}
 	}
-}
 
 	if !ditemukan {
-	fmt.Println("Tidak ditemukan aktivitas dengan kategori tersebut.")
+		fmt.Println("Tidak ditemukan aktivitas dengan kategori tersebut.")
+	}
 }
-}
-
 
 // Sequential Search untuk mencari aktivitas 
 func cariAktivitas() {
@@ -319,8 +319,16 @@ func cariAktivitas() {
 	}
 
 	var carinama string
-	fmt.Print("Masukan Aktiviytas yang di cari : ")
-	fmt.Scanln(&carinama)
+	fmt.Print("Masukan nama aktivitas yang dicari: ")
+	fmt.Scan(&carinama)
+	
+	// Hapus spasi di awal dan akhir
+	carinama = strings.TrimSpace(carinama)
+	
+	if carinama == "" {
+		fmt.Println("Kata kunci pencarian tidak boleh kosong.")
+		return
+	}
 	
 	var ditemukan bool = false
 	
@@ -337,9 +345,11 @@ func cariAktivitas() {
 	}
 	
 	if !ditemukan {
-		fmt.Println("Aktivitas dengan kata kunci tersebut tidak ditemukan.")
+		fmt.Printf("Aktivitas dengan kata kunci '%s' tidak ditemukan.\n", carinama)
 	}
 }
+
+
 // Menu utama aplikasi
 func menu() {
 	var pilih int = 0
