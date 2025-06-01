@@ -283,39 +283,6 @@ func urutTanggal(naik bool) {
 	fmt.Println("Data berhasil diurutkan berdasarkan tanggal.")
 }
 
-// Mengurutkan aktivitas berdasarkan frekuensi menggunakan Selection Sort
-func urutFrekuensi(naik bool) {
-	// Selection Sort untuk frekuensi aktivitas
-	var temp [JML_AKTIVITAS]AktivitasFrekuensi
-	var i int
-	for i = 0; i < JML_AKTIVITAS; i++ {
-		temp[i] = frekuensiAktivitas[i]
-	}
-
-	var j int
-	var idx int
-	for i = 0; i < JML_AKTIVITAS-1; i++ {
-		idx = i
-		for j = i + 1; j < JML_AKTIVITAS; j++ {
-			if (naik && temp[j].Frekuensi < temp[idx].Frekuensi) ||
-				(!naik && temp[j].Frekuensi > temp[idx].Frekuensi) {
-				idx = j
-			}
-		}
-		var tempAkt AktivitasFrekuensi
-		tempAkt = temp[i]
-		temp[i] = temp[idx]
-		temp[idx] = tempAkt
-	}
-
-	fmt.Println("\n--- Aktivitas Berdasarkan Frekuensi ---")
-	for i = 0; i < JML_AKTIVITAS; i++ {
-		if temp[i].Frekuensi > 0 {
-			fmt.Printf("%s: %d kali\n", temp[i].Nama, temp[i].Frekuensi)
-		}
-	}
-}
-
 // Sequential Search untuk mencari habit berdasarkan kategori
 func cariKategori() {
 	if len(master) == 0 {
@@ -385,9 +352,8 @@ func menu() {
 		fmt.Println("5. Lihat Total Poin")
 		fmt.Println("6. Urutkan Berdasarkan Poin")
 		fmt.Println("7. Urutkan Berdasarkan Tanggal")
-		fmt.Println("8. Urutkan Berdasarkan Frekuensi")
-		fmt.Println("9. Cari Aktivitas Berdasarkan Kategori") // Sequential Search
-		fmt.Println("10. Cari Aktivitas")                     // Binary Search
+		fmt.Println("8. Cari Aktivitas Berdasarkan Kategori") // Sequential Search
+		fmt.Println("9. Cari Aktivitas")                     // Binary Search
 		fmt.Println("99. Keluar")
 		fmt.Print("Pilih menu: ")
 		fmt.Scan(&pilih)
@@ -414,13 +380,8 @@ func menu() {
 			fmt.Scan(&opsi)
 			urutTanggal(opsi == 1)
 		case 8:
-			var opsi int
-			fmt.Print("Naik (1) atau Turun (0): ")
-			fmt.Scan(&opsi)
-			urutFrekuensi(opsi == 1)
-		case 9:
 			cariKategori()
-		case 10:
+		case 9:
 			cariAktivitas()
 		case 99:
 			fmt.Println("Terima kasih telah membangun kebiasaan hijau bersama Green Habit!")
